@@ -64,6 +64,12 @@ re-downloaded in order to locate PACKAGE."
   (require-package 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
+(require-package 'helm)
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+
 ;;
 ;; ██╗   ██╗ ██╗
 ;; ██║   ██║ ██║
@@ -154,7 +160,7 @@ re-downloaded in order to locate PACKAGE."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (go-dlv all-the-icons nyan-mode neotree go-mode go-autocomplete exec-path-from-shell dracula-theme)))
+    (f helm go-dlv all-the-icons nyan-mode neotree go-mode go-autocomplete exec-path-from-shell dracula-theme)))
  '(send-mail-function (quote sendmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
