@@ -38,18 +38,12 @@
 (prefer-coding-system 'utf-8)
 
 (require 'package)
+
 ;; melpa.
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-					(not (gnutls-available-p))))
-	   (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-  (add-to-list 'package-archives (cons "melpa" url) t))
-
-(when (< emacs-major-version 24)
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-
+(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
-(add-to-list 'package-archives
-			 '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 
 (defun require-package (package &optional min-version no-refresh)
   "Install given PACKAGE, optionally requiring MIN-VERSION.
@@ -68,6 +62,7 @@ re-downloaded in order to locate PACKAGE."
 
 ;; exec path from shell.
 (when (memq window-system '(mac ns x))
+  (require-package 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
 ;;
@@ -92,16 +87,17 @@ re-downloaded in order to locate PACKAGE."
 (setq initial-scratch-message nil)
 
 ;; nyan mode.
-(require 'nyan-mode)
+(require-package 'nyan-mode)
 (nyan-mode)
 
 ;; dracula theme.
-(require 'dracula-theme)
+(require-package 'dracula-theme)
 (load-theme 'dracula t)
 
 ;; neotree.
-(require 'neotree)
-(require 'all-the-icons)
+(require-package 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+(require-package 'all-the-icons)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 ;;
@@ -112,9 +108,12 @@ re-downloaded in order to locate PACKAGE."
 ;; ╚██████╔╝ ╚██████╔╝ ███████╗ ██║  ██║ ██║ ╚████║ ╚██████╔╝
 ;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
 ;;
-(require 'go-mode)
+(require-package 'go-mode)
+(require-package 'go-autocomplete)
 (require 'go-autocomplete)
-(require 'auto-complete-config)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "GOPATH"))
 (ac-config-default)
 
 ;;
@@ -129,17 +128,18 @@ re-downloaded in order to locate PACKAGE."
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
-(defun goto-go-dir()
+(defun goto-go-path()
   (interactive)
-  (find-file "~/src/goprojects/src"))
+  (find-file (replace-regexp-in-string "\n" "" (shell-command-to-string "go env GOPATH")))
+  (neotree))
+(global-set-key (kbd "s-G") 'goto-go-path)
 
-(defun goto-post-dir()
+(defun goto-workspace-path()
   (interactive)
-  (find-file "/Users/joylobo/Google Drive/Documents/posts"))
-
-(defun goto-private-dir()
-  (interactive)
-  (find-file "/Users/joylobo/Google Drive/Documents/private"))
+  (find-file "~/workspace")
+  (neotree)
+  (switch-to-buffer "workspace"))
+(global-set-key (kbd "s-W") 'goto-workspace-path)
 
 (defun kill-other-buffers ()
   "Kill all other buffers."
