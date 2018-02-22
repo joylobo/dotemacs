@@ -6,7 +6,6 @@
 ;; ██████╔╝ ██║  ██║ ███████║ ██║ ╚██████╗
 ;; ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═════╝
 ;;
-
 (setq user-full-name "Joy Lobo")
 (setq user-mail-address "joylobo0528@gmail.com")
 
@@ -69,7 +68,6 @@ re-downloaded in order to locate PACKAGE."
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
-
 ;;
 ;; ██╗   ██╗ ██╗
 ;; ██║   ██║ ██║
@@ -78,7 +76,6 @@ re-downloaded in order to locate PACKAGE."
 ;; ╚██████╔╝ ██║
 ;;  ╚═════╝  ╚═╝
 ;;
-
 ;; window.
 (set-frame-parameter nil 'fullscreen 'fullboth)
 (if (functionp 'tool-bar-mode) (tool-bar-mode 0))
