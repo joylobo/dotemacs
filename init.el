@@ -9,11 +9,17 @@
 (setq user-full-name "Joy Lobo")
 (setq user-mail-address "joylobo0528@gmail.com")
 
+;; Use the desktop library to save the state of Emacs from one session to another.
+(desktop-save-mode 1)
+
 ;; Ask "y" or "n" instead of "yes" or "no". Yes, laziness is great.
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Highlight corresponding parentheses when cursor is on one.
 (show-paren-mode t)
+
+;; Insert Parenthesis by Pair: electric-pair-mode
+(electric-pair-mode 1)
 
 ;; Highlight tabulations.
 (setq-default highlight-tabs t)
@@ -35,6 +41,9 @@
 (set-default-coding-systems 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
+(global-set-key (kbd "M-n") 'switch-to-next-buffer)
+(global-set-key (kbd "M-p") 'switch-to-prev-buffer)
 
 (require 'package)
 
@@ -63,10 +72,14 @@ re-downloaded in order to locate PACKAGE."
   (require-package 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
+;; helm
 (require-package 'helm)
+(require 'helm)
+(helm-mode 1)
 (require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
+(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 
 ;;
 ;; ██╗   ██╗ ██╗
@@ -77,12 +90,16 @@ re-downloaded in order to locate PACKAGE."
 ;;  ╚═════╝  ╚═╝
 ;;
 ;; window.
-(set-frame-parameter nil 'fullscreen 'fullboth)
 (if (functionp 'tool-bar-mode) (tool-bar-mode 0))
 (if (functionp 'scroll-bar-mode) (scroll-bar-mode 0))
 (menu-bar-mode -1)
 (global-linum-mode)
 (setq tab-width 4)
+
+;; window-numbering
+(require-package 'window-numbering)
+(require 'window-numbering)
+(window-numbering-mode 1)
 
 ;;disable splash screen and startup message.
 (setq inhibit-startup-message t)
@@ -101,6 +118,57 @@ re-downloaded in order to locate PACKAGE."
 (global-set-key [f8] 'neotree-toggle)
 (require-package 'all-the-icons)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+
+(require-package 'flycheck)
+(require-package 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(require 'flycheck)
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+	'(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+	'(json-jsonlist)))
+
+;;
+;;      ██╗  █████╗  ██╗   ██╗  █████╗  ███████╗  ██████╗ ██████╗  ██╗ ██████╗  ████████╗
+;;      ██║ ██╔══██╗ ██║   ██║ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔══██╗ ██║ ██╔══██╗ ╚══██╔══╝
+;;      ██║ ███████║ ██║   ██║ ███████║ ███████╗ ██║      ██████╔╝ ██║ ██████╔╝    ██║
+;; ██   ██║ ██╔══██║ ╚██╗ ██╔╝ ██╔══██║ ╚════██║ ██║      ██╔══██╗ ██║ ██╔═══╝     ██║
+;; ╚█████╔╝ ██║  ██║  ╚████╔╝  ██║  ██║ ███████║ ╚██████╗ ██║  ██║ ██║ ██║         ██║
+;;  ╚════╝  ╚═╝  ╚═╝   ╚═══╝   ╚═╝  ╚═╝ ╚══════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝         ╚═╝
+;; js2-mode.
+(require-package 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+;; tern
+(require-package 'tern)
+(require 'tern)
+(setq tern-command (append tern-command '("--no-port-file")))
+(add-hook 'js2-mode-hook (lambda ()
+			   (tern-mode t)
+			   (js2-mode-hide-warnings-and-errors)))
+
+(require-package 'tern-auto-complete)
+(eval-after-load 'tern
+  '(progn
+	  (require 'tern-auto-complete)
+	  (tern-ac-setup)))
 
 ;;
 ;;  ██████╗   ██████╗  ██╗       █████╗  ███╗   ██╗  ██████╗
@@ -157,7 +225,7 @@ re-downloaded in order to locate PACKAGE."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (f helm go-dlv all-the-icons nyan-mode neotree go-mode go-autocomplete exec-path-from-shell dracula-theme)))
+    (window-numbering window-number flycheck f helm go-dlv all-the-icons nyan-mode neotree go-mode go-autocomplete exec-path-from-shell dracula-theme)))
  '(send-mail-function (quote sendmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
