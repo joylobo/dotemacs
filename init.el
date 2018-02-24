@@ -1,3 +1,9 @@
+;;; init.el --- An emacs config for javascript and golang.
+
+;;; Commentary:
+
+;;; Code:
+
 ;;
 ;; ██████╗   █████╗  ███████╗ ██╗  ██████╗
 ;; ██╔══██╗ ██╔══██╗ ██╔════╝ ██║ ██╔════╝
@@ -8,6 +14,20 @@
 ;;
 (setq user-full-name "Joy Lobo")
 (setq user-mail-address "joylobo0528@gmail.com")
+(setq gc-cons-threshold 100000000)
+
+;; Packages.
+(require 'package)
+(setq package-enable-at-startup nil)
+(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+(package-initialize)
+
+;; Install the use-package if needed.
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
 ;; Use the desktop library to save the state of Emacs from one session to another.
 (desktop-save-mode 1)
@@ -28,11 +48,12 @@
 (setq-default show-trailing-whitespace t)
 
 ;; Save backup files in a dedicated directory.
-(setq backup-directory-alist '(("." . "~/.emacs-saves")))
+(setq backup-directory-alist '(("." . "~/.emacs.d/.bak")))
 
 ;; Remove useless whitespace before saving a file.
 (add-hook 'before-save-hook 'whitespace-cleanup)
-(add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq require-final-newline t)
 
 ;; Set locale to UTF8.
 (set-language-environment 'utf-8)
@@ -42,44 +63,38 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; Set the global keyboard shortcuts.
 (global-set-key (kbd "M-n") 'switch-to-next-buffer)
 (global-set-key (kbd "M-p") 'switch-to-prev-buffer)
 
-(require 'package)
+;; Log the startup time.
+(use-package benchmark-init
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
-;; melpa.
-(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-(package-initialize)
-
-(defun require-package (package &optional min-version no-refresh)
-  "Install given PACKAGE, optionally requiring MIN-VERSION.
-If NO-REFRESH is non-nil, the available package lists will not be
-re-downloaded in order to locate PACKAGE."
-  (if (package-installed-p package min-version)
-	  t
-	(if (or (assoc package package-archive-contents) no-refresh)
-		(if (boundp 'package-selected-packages)
-			;; Record this as a package the user installed explicitly.
-			(package-install package nil)
-		  (package-install package))
-	  (progn
-		(package-refresh-contents)
-		(require-package package min-version t)))))
-
-;; exec path from shell.
-(when (memq window-system '(mac ns x))
-  (require-package 'exec-path-from-shell)
-  (exec-path-from-shell-initialize))
+;; exec-path-from-shell
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns))
+  :config
+  (progn
+    (setq exec-path-from-shell-arguments '("-l"))
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "GOPATH")))
 
 ;; helm
-(require-package 'helm)
-(require 'helm)
-(helm-mode 1)
-(require 'helm-config)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+(use-package helm
+  :ensure t
+  :config
+  (progn
+    (helm-mode 1)
+    (use-package helm-config
+      :config
+      (progn
+	(global-set-key (kbd "M-x") 'helm-M-x)
+	(global-set-key (kbd "C-x C-f") 'helm-find-files)
+	(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)))))
 
 ;;
 ;; ██╗   ██╗ ██╗
@@ -92,57 +107,69 @@ re-downloaded in order to locate PACKAGE."
 ;; window.
 (if (functionp 'tool-bar-mode) (tool-bar-mode 0))
 (if (functionp 'scroll-bar-mode) (scroll-bar-mode 0))
-(menu-bar-mode -1)
+(unless (display-graphic-p) (menu-bar-mode -1))
 (global-linum-mode)
 (setq tab-width 4)
 
+(setq mouse-wheel-scroll-amount '(1))
+(setq mouse-wheel-progressive-speed nil)
+(setq mouse-wheel-follow-mouse 't)
+
 ;; window-numbering
-(require-package 'window-numbering)
-(require 'window-numbering)
-(window-numbering-mode 1)
+(use-package window-numbering
+  :ensure t
+  :config
+  (window-numbering-mode 1))
 
 ;;disable splash screen and startup message.
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
 ;; nyan mode.
-(require-package 'nyan-mode)
-(nyan-mode)
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode))
 
 ;; dracula theme.
-(require-package 'dracula-theme)
-(load-theme 'dracula t)
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t))
 
 ;; neotree.
-(require-package 'neotree)
-(global-set-key [f8] 'neotree-toggle)
-(require-package 'all-the-icons)
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+(use-package neotree
+  :ensure t
+  :config
+  (progn
+    (global-set-key [f8] 'neotree-toggle)
+    (use-package all-the-icons
+      :ensure t
+      :config
+      (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))))
 
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
+(use-package flycheck
+  :ensure t
+  :config
+  (progn
+    ;; turn on flychecking globally
+    (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(require-package 'flycheck)
-(require-package 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-(require 'flycheck)
+    ;; disable jshint since we prefer eslint checking
+    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(javascript-jshint)))
 
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
+    ;; use eslint with web-mode for jsx files
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
 
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-	'(javascript-jshint)))
+    ;; customize flycheck temp file prefix
+    (setq-default flycheck-temp-prefix ".flycheck")
 
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-	'(json-jsonlist)))
+    ;; disable json-jsonlist checking for json files
+    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(json-jsonlist)))))
 
 ;;
 ;;      ██╗  █████╗  ██╗   ██╗  █████╗  ███████╗  ██████╗ ██████╗  ██╗ ██████╗  ████████╗
@@ -152,23 +179,27 @@ re-downloaded in order to locate PACKAGE."
 ;; ╚█████╔╝ ██║  ██║  ╚████╔╝  ██║  ██║ ███████║ ╚██████╗ ██║  ██║ ██║ ██║         ██║
 ;;  ╚════╝  ╚═╝  ╚═╝   ╚═══╝   ╚═╝  ╚═╝ ╚══════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝         ╚═╝
 ;; js2-mode.
-(require-package 'js2-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+(use-package js2-mode
+  :ensure t
+  :config
+  (progn
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+    (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)))
 
 ;; tern
-(require-package 'tern)
-(require 'tern)
-(setq tern-command (append tern-command '("--no-port-file")))
-(add-hook 'js2-mode-hook (lambda ()
+(use-package tern
+  :ensure t
+  :config
+  (progn
+    (setq tern-command (append tern-command '("--no-port-file")))
+    (use-package tern-auto-complete
+      :ensure t
+      :config
+	    (tern-ac-setup))
+    (add-hook 'js2-mode-hook (lambda ()
 			   (tern-mode t)
-			   (js2-mode-hide-warnings-and-errors)))
+			   (js2-mode-hide-warnings-and-errors)))))
 
-(require-package 'tern-auto-complete)
-(eval-after-load 'tern
-  '(progn
-	  (require 'tern-auto-complete)
-	  (tern-ac-setup)))
 
 ;;
 ;;  ██████╗   ██████╗  ██╗       █████╗  ███╗   ██╗  ██████╗
@@ -178,13 +209,12 @@ re-downloaded in order to locate PACKAGE."
 ;; ╚██████╔╝ ╚██████╔╝ ███████╗ ██║  ██║ ██║ ╚████║ ╚██████╔╝
 ;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
 ;;
-(require-package 'go-mode)
-(require-package 'go-autocomplete)
-(require 'go-autocomplete)
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "GOPATH"))
-(ac-config-default)
+(use-package go-mode
+  :ensure t)
+(use-package go-autocomplete
+  :ensure t
+  :config
+  (ac-config-default))
 
 ;;
 ;;  ██████╗ ██╗   ██╗ ███████╗ ████████╗  ██████╗  ███╗   ███╗
@@ -225,11 +255,13 @@ re-downloaded in order to locate PACKAGE."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (window-numbering window-number flycheck f helm go-dlv all-the-icons nyan-mode neotree go-mode go-autocomplete exec-path-from-shell dracula-theme)))
- '(send-mail-function (quote sendmail-send-it)))
+    (magit go-autocomplete go-mode tern js2-mode all-the-icons flycheck web-mode neotree dracula-theme nyan-mode window-numbering helm benchmark-init use-package exec-path-from-shell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(provide 'init)
+;;; init.el ends here
