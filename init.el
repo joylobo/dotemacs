@@ -16,7 +16,7 @@
 (setq user-mail-address "joylobo0528@gmail.com")
 (setq gc-cons-threshold 100000000)
 
-(setq default-frame-alist '((width . 180) (height . 53)))
+(setq default-frame-alist '((width . 180) (height . 50)))
 
 ;; Packages.
 (require 'package)
@@ -45,6 +45,18 @@
 
 ;; Show trailing white spaces.
 (setq-default show-trailing-whitespace t)
+
+;; Remember cursor position.
+(if (version< emacs-version "25.0")
+    (progn
+      (require 'saveplace)
+      (setq-default save-place t))
+  (save-place-mode 1))
+
+;; Recently opened files.
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;; Save backup files in a dedicated directory.
 (setq backup-directory-alist '(("." . "~/.emacs.d/.bak")))
@@ -181,14 +193,27 @@
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
 (use-package company
-	:ensure t
- 	:config
- 	(setq company-tooltip-limit 20)
- 	(setq company-idle-delay .3)
- 	(setq company-minimum-prefix-length 1)
- 	(setq company-echo-delay 0)
- 	(setq company-begin-commands '(self-insert-command))
-	(global-company-mode t))
+  :ensure t
+  :config
+  (setq company-tooltip-limit 20)
+  (setq company-idle-delay .3)
+  (setq company-minimum-prefix-length 1)
+  (setq company-echo-delay 0)
+  (setq company-begin-commands '(self-insert-command))
+  (global-company-mode t))
+
+(use-package smart-compile :ensure t)
+(defun my-compilation-hook ()
+  (when (not (get-buffer-window "*compilation*"))
+    (save-selected-window
+      (save-excursion
+	(let* ((w (split-window-vertically)))
+	  (select-window w)
+	  (set-window-buffer w "*scratch*")
+	  (switch-to-buffer "*compilation*")
+	  (shrink-window 10))))))
+(add-hook 'compilation-mode-hook 'my-compilation-hook)
+(global-set-key [f9] 'smart-compile)
 
 
 ;;
@@ -215,10 +240,10 @@
     (use-package tern-auto-complete
       :ensure t
       :config
-	    (tern-ac-setup))
+      (tern-ac-setup))
     (add-hook 'js2-mode-hook (lambda ()
-			   (tern-mode t)
-			   (js2-mode-hide-warnings-and-errors)))))
+			       (tern-mode t)
+			       (js2-mode-hide-warnings-and-errors)))))
 
 
 ;;
@@ -230,10 +255,14 @@
 ;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
 ;;
 (use-package go-mode :ensure t)
+(add-hook 'go-mode-hook
+	(lambda ()
+		(set (make-local-variable 'compile-command)
+			(format "go run %s" (file-name-nondirectory buffer-file-name)))))
 (use-package company-go :ensure t)
 (add-hook 'go-mode-hook (lambda ()
-                          (set (make-local-variable 'company-backends) '(company-go))
-                          (company-mode)))
+	(set (make-local-variable 'company-backends) '(company-go))
+	(company-mode)))
 
 
 ;;
@@ -264,8 +293,7 @@
 (defun kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
-  (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
-  (neotree))
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "s-K") 'kill-other-buffers)
 
 (custom-set-variables

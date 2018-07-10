@@ -6,3 +6,5 @@ elpa
 eshell
 .cache
 .emacs.desktop*
+places
+recentf
