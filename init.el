@@ -16,6 +16,8 @@
 (setq user-mail-address "joylobo0528@gmail.com")
 (setq gc-cons-threshold 100000000)
 
+(setq default-frame-alist '((width . 180) (height . 53)))
+
 ;; Packages.
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -28,9 +30,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-
-;; Use the desktop library to save the state of Emacs from one session to another.
-(desktop-save-mode 1)
 
 ;; Ask "y" or "n" instead of "yes" or "no". Yes, laziness is great.
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -121,7 +120,7 @@
   :config
   (window-numbering-mode 1))
 
-;;disable splash screen and startup message.
+;; Disable splash screen and startup message.
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -156,20 +155,11 @@
   :ensure t
   :config
   (progn
-    ;; turn on flychecking globally
-    (add-hook 'after-init-hook #'global-flycheck-mode)
-
-    ;; disable jshint since we prefer eslint checking
-    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(javascript-jshint)))
-
-    ;; use eslint with web-mode for jsx files
-    (flycheck-add-mode 'javascript-eslint 'web-mode)
-
-    ;; customize flycheck temp file prefix
-    (setq-default flycheck-temp-prefix ".flycheck")
-
-    ;; disable json-jsonlist checking for json files
-    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(json-jsonlist)))))
+    (add-hook 'after-init-hook #'global-flycheck-mode) ;; Turn on flychecking globally.
+    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(javascript-jshint))) ;; Disable jshint since we prefer eslint checking.
+    (flycheck-add-mode 'javascript-eslint 'web-mode) ;; Use eslint with web-mode for jsx files.
+    (setq-default flycheck-temp-prefix ".flycheck") ;; Customize flycheck temp file prefix.
+    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(json-jsonlist))))) ;; Disable json-jsonlist checking for json files.
 
 ;; gtd
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -189,6 +179,17 @@
 			   ("~/gtd/someday.org" :level . 1)
 			   ("~/gtd/tickler.org" :maxlevel . 2)))
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+(use-package company
+	:ensure t
+ 	:config
+ 	(setq company-tooltip-limit 20)
+ 	(setq company-idle-delay .3)
+ 	(setq company-minimum-prefix-length 1)
+ 	(setq company-echo-delay 0)
+ 	(setq company-begin-commands '(self-insert-command))
+	(global-company-mode t))
+
 
 ;;
 ;;      ██╗  █████╗  ██╗   ██╗  █████╗  ███████╗  ██████╗ ██████╗  ██╗ ██████╗  ████████╗
@@ -228,12 +229,12 @@
 ;; ╚██████╔╝ ╚██████╔╝ ███████╗ ██║  ██║ ██║ ╚████║ ╚██████╔╝
 ;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
 ;;
-(use-package go-mode
-  :ensure t)
-(use-package go-autocomplete
-  :ensure t
-  :config
-  (ac-config-default))
+(use-package go-mode :ensure t)
+(use-package company-go :ensure t)
+(add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))
+                          (company-mode)))
+
 
 ;;
 ;;  ██████╗ ██╗   ██╗ ███████╗ ████████╗  ██████╗  ███╗   ███╗
@@ -274,7 +275,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (magit go-autocomplete go-mode tern js2-mode all-the-icons flycheck web-mode neotree dracula-theme nyan-mode window-numbering helm benchmark-init use-package exec-path-from-shell))))
+    (window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
