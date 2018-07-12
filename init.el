@@ -1,4 +1,4 @@
-;;; init.el --- An emacs config for javascript and golang.
+;;; init.el --- My emacs config for c/c++ javascript and golang.
 
 ;;; Commentary:
 
@@ -55,6 +55,7 @@
 
 ;; Recently opened files.
 (recentf-mode 1)
+(use-package recentf-ext :ensure t)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
@@ -256,13 +257,13 @@
 ;;
 (use-package go-mode :ensure t)
 (add-hook 'go-mode-hook
-	(lambda ()
-		(set (make-local-variable 'compile-command)
-			(format "go run %s" (file-name-nondirectory buffer-file-name)))))
+	  (lambda ()
+	    (set (make-local-variable 'compile-command)
+		 (format "go run %s" (file-name-nondirectory buffer-file-name)))))
 (use-package company-go :ensure t)
 (add-hook 'go-mode-hook (lambda ()
-	(set (make-local-variable 'company-backends) '(company-go))
-	(company-mode)))
+			  (set (make-local-variable 'company-backends) '(company-go))
+			  (company-mode)))
 
 
 ;;
@@ -303,7 +304,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
+    (recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
