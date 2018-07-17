@@ -160,10 +160,6 @@
       :config
       (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))))
 
-(use-package web-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
 (use-package flycheck
   :ensure t
   :config
@@ -238,10 +234,12 @@
   :config
   (progn
     (setq tern-command (append tern-command '("--no-port-file")))
-    (use-package tern-auto-complete
+    (use-package company-tern
       :ensure t
       :config
-      (tern-ac-setup))
+      (add-to-list 'company-backends 'company-tern)
+      )
+
     (add-hook 'js2-mode-hook (lambda ()
 			       (tern-mode t)
 			       (js2-mode-hide-warnings-and-errors)))))
@@ -256,14 +254,13 @@
 ;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
 ;;
 (use-package go-mode :ensure t)
-(add-hook 'go-mode-hook
-	  (lambda ()
-	    (set (make-local-variable 'compile-command)
-		 (format "go run %s" (file-name-nondirectory buffer-file-name)))))
 (use-package company-go :ensure t)
 (add-hook 'go-mode-hook (lambda ()
-			  (set (make-local-variable 'company-backends) '(company-go))
-			  (company-mode)))
+			  (add-hook 'go-mode-hook
+				    (set (make-local-variable 'compile-command)
+					 (format "go run %s" (file-name-nondirectory buffer-file-name)))
+				    (set (make-local-variable 'company-backends) '(company-go))
+				    (company-mode))))
 
 
 ;;
