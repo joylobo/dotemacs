@@ -16,7 +16,7 @@
 (setq user-mail-address "joylobo0528@gmail.com")
 (setq gc-cons-threshold 100000000)
 
-(setq default-frame-alist '((width . 180) (height . 50)))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Packages.
 (require 'package)
@@ -301,7 +301,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
+    (htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
