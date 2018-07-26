@@ -112,6 +112,17 @@
   :ensure t
   :config (global-set-key (kbd "C-x g") 'magit-status))
 
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
+
+(use-package yasnippet
+  :ensure t
+  :config (yas-global-mode))
+
+(use-package yasnippet-snippets
+  :ensure t)
+
 
 ;;
 ;; ██╗   ██╗ ██╗
@@ -141,6 +152,11 @@
 ;; Disable splash screen and startup message.
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
+
+;; powerline theme
+(use-package powerline
+  :ensure
+  :config (powerline-default-theme))
 
 ;; nyan mode.
 (use-package nyan-mode
@@ -306,7 +322,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
+    (powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
