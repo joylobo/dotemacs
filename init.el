@@ -56,7 +56,7 @@
 (recentf-mode 1)
 (use-package recentf-ext :ensure t)
 (setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(global-set-key "\C-x\ \C-r" 'helm-recentf)
 
 ;; Save backup files in a dedicated directory.
 (setq backup-directory-alist '(("." . "~/.emacs.d/.bak")))
@@ -105,7 +105,8 @@
       (progn
 	(global-set-key (kbd "M-x") 'helm-M-x)
 	(global-set-key (kbd "C-x C-f") 'helm-find-files)
-	(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)))))
+	(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+	))))
 
 (use-package magit
   :ensure t
@@ -116,6 +117,17 @@
   :ensure t
   :defer t
   :init (which-key-mode))
+
+(use-package undo-tree
+  :ensure t
+  :bind (("C-x u" . 'undo-tree-visualize)))
+
+(use-package multiple-cursors
+  :ensure t
+  :defer t
+  :bind (("C->" . 'mc/mark-next-like-this)
+	 ("C-<" . 'mc/mark-previous-like-this)
+	 ("C-c C-<" . 'mc/mark-all-like-this)))
 
 (use-package yasnippet
   :ensure t

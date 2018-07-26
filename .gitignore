@@ -8,3 +8,4 @@ eshell
 .emacs.desktop*
 places
 recentf
+.mc-lists.el
