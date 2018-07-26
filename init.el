@@ -15,7 +15,6 @@
 (setq user-full-name "Joy Lobo")
 (setq user-mail-address "joylobo0528@gmail.com")
 (setq gc-cons-threshold 100000000)
-
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Packages.
@@ -110,18 +109,20 @@
 
 (use-package magit
   :ensure t
-  :config (global-set-key (kbd "C-x g") 'magit-status))
+  :defer t
+  :bind ("C-x g" . magit-status))
 
 (use-package which-key
   :ensure t
-  :config (which-key-mode))
+  :defer t
+  :init (which-key-mode))
 
 (use-package yasnippet
   :ensure t
-  :config (yas-global-mode))
+  :defer t
+  :init (yas-global-mode))
 
-(use-package yasnippet-snippets
-  :ensure t)
+(use-package yasnippet-snippets :ensure t :defer t)
 
 
 ;;
@@ -146,7 +147,8 @@
 ;; window-numbering
 (use-package window-numbering
   :ensure t
-  :config
+  :defer t
+  :init
   (window-numbering-mode 1))
 
 ;; Disable splash screen and startup message.
@@ -157,6 +159,10 @@
 (use-package powerline
   :ensure
   :config (powerline-default-theme))
+
+(load-file (concat (file-name-directory load-file-name)
+		     "clean-mode-line.el"))
+(require 'clean-mode-line)
 
 ;; nyan mode.
 (use-package nyan-mode
@@ -173,7 +179,8 @@
 ;; neotree.
 (use-package neotree
   :ensure t
-  :config
+  :defer t
+  :init
   (progn
     (global-set-key [f8] 'neotree-toggle)
     (use-package all-the-icons
@@ -220,7 +227,7 @@
   (setq company-begin-commands '(self-insert-command))
   (global-company-mode t))
 
-(use-package smart-compile :ensure t)
+(use-package smart-compile :ensure t :defer t)
 (defun my-compilation-hook ()
   (when (not (get-buffer-window "*compilation*"))
     (save-selected-window
@@ -258,12 +265,12 @@
     (use-package company-tern
       :ensure t
       :config
-      (add-to-list 'company-backends 'company-tern)
-      )
+      (add-to-list 'company-backends 'company-tern))
 
-    (add-hook 'js2-mode-hook (lambda ()
+			 (add-hook 'js2-mode-hook (lambda ()
 			       (tern-mode t)
 			       (js2-mode-hide-warnings-and-errors)))))
+
 
 
 ;;
@@ -274,14 +281,17 @@
 ;; ╚██████╔╝ ╚██████╔╝ ███████╗ ██║  ██║ ██║ ╚████║ ╚██████╔╝
 ;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
 ;;
-(use-package go-mode :ensure t)
-(use-package company-go :ensure t)
-(add-hook 'go-mode-hook (lambda ()
-			  (add-hook 'go-mode-hook
-				    (set (make-local-variable 'compile-command)
-					 (format "go run %s" (file-name-nondirectory buffer-file-name)))
-				    (set (make-local-variable 'company-backends) '(company-go))
-				    (company-mode))))
+(use-package go-mode
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'go-mode-hook (lambda ()
+			    (set (make-local-variable 'compile-command)
+				 (format "go run %s" (file-name-nondirectory buffer-file-name)))
+			    (set (make-local-variable 'company-backends) '(company-go))
+			    (company-mode))))
+
+(use-package company-go :ensure t :defer t)
 
 
 ;;
