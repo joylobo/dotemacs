@@ -331,11 +331,29 @@
   (switch-to-buffer "workspace"))
 (global-set-key (kbd "s-W") 'goto-workspace-path)
 
+(defun goto-documents-path()
+  (interactive)
+  (find-file "~/Documents")
+  (neotree)
+  (switch-to-buffer "Documents"))
+(global-set-key (kbd "s-D") 'goto-documents-path)
+
 (defun kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "s-K") 'kill-other-buffers)
+
+(when (memq window-system '(mac ns))
+  (defun notify ()
+    "Send notification"
+    (interactive)
+    (let ((title (read-string "Enter the title: "))
+	  (message (read-string "Enter the message: ")))
+      (send-notification title message)))
+
+  (defun send-notification (title message)
+    (shell-command (format "osascript -e 'display notification \"%s\" with title \"%s\"' sound name \"default\"" message title))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
