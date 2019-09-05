@@ -229,6 +229,11 @@
 			   ("~/gtd/tickler.org" :maxlevel . 2)))
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
+(use-package ob-go :ensure t)
+(use-package ob-browser :ensure t)
+
+(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (go . t) (js . t) (shell . t))
+
 (use-package company
   :ensure t
   :config
@@ -252,6 +257,8 @@
 (add-hook 'compilation-mode-hook 'my-compilation-hook)
 (global-set-key [f9] 'smart-compile)
 
+
+(use-package emmet-mode :ensure t)
 
 ;;
 ;;      ██╗  █████╗  ██╗   ██╗  █████╗  ███████╗  ██████╗ ██████╗  ██╗ ██████╗  ████████╗
