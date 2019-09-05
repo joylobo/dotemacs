@@ -232,7 +232,7 @@
 (use-package ob-go :ensure t)
 (use-package ob-browser :ensure t)
 
-(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (go . t) (js . t) (shell . t))
+(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (go . t) (js . t) (shell . t)))
 
 (use-package company
   :ensure t
