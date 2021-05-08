@@ -258,38 +258,6 @@
 (global-set-key [f9] 'smart-compile)
 
 
-(use-package emmet-mode :ensure t)
-
-;;
-;;      ██╗  █████╗  ██╗   ██╗  █████╗  ███████╗  ██████╗ ██████╗  ██╗ ██████╗  ████████╗
-;;      ██║ ██╔══██╗ ██║   ██║ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔══██╗ ██║ ██╔══██╗ ╚══██╔══╝
-;;      ██║ ███████║ ██║   ██║ ███████║ ███████╗ ██║      ██████╔╝ ██║ ██████╔╝    ██║
-;; ██   ██║ ██╔══██║ ╚██╗ ██╔╝ ██╔══██║ ╚════██║ ██║      ██╔══██╗ ██║ ██╔═══╝     ██║
-;; ╚█████╔╝ ██║  ██║  ╚████╔╝  ██║  ██║ ███████║ ╚██████╗ ██║  ██║ ██║ ██║         ██║
-;;  ╚════╝  ╚═╝  ╚═╝   ╚═══╝   ╚═╝  ╚═╝ ╚══════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝         ╚═╝
-;; js2-mode.
-(use-package js2-mode
-  :ensure t
-  :config
-  (progn
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-    (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)))
-
-;; tern
-(use-package tern
-  :ensure t
-  :config
-  (progn
-    (setq tern-command (append tern-command '("--no-port-file")))
-    (use-package company-tern
-      :ensure t
-      :config
-      (add-to-list 'company-backends 'company-tern))
-
-			 (add-hook 'js2-mode-hook (lambda ()
-			       (tern-mode t)
-			       (js2-mode-hide-warnings-and-errors)))))
-
 
 
 ;;
@@ -368,8 +336,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons))))
+   '(powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
