@@ -169,9 +169,9 @@
   :ensure
   :config (powerline-default-theme))
 
-(load-file (concat (file-name-directory load-file-name)
-		     "clean-mode-line.el"))
-(require 'clean-mode-line)
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 ;; nyan mode.
 (use-package nyan-mode
