@@ -37,7 +37,7 @@
 (show-paren-mode t)
 
 ;; Insert Parenthesis by Pair: electric-pair-mode
-(electric-pair-mode 1)
+; (electric-pair-mode 1)
 
 ;; Highlight tabulations.
 (setq-default highlight-tabs t)
@@ -66,12 +66,12 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq require-final-newline t)
 
+(setq system-time-locale "C")
 ;; Set locale to UTF8.
 (set-language-environment 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (setq locale-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
-(set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
 ;; Set the global keyboard shortcuts.
@@ -108,11 +108,6 @@
 	(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 	))))
 
-(use-package magit
-  :ensure t
-  :defer t
-  :bind ("C-x g" . magit-status))
-
 (use-package which-key
   :ensure t
   :defer t
@@ -135,6 +130,8 @@
   :init (yas-global-mode))
 
 (use-package yasnippet-snippets :ensure t :defer t)
+
+(use-package dash :ensure t)
 
 
 ;;
@@ -200,19 +197,14 @@
       :config
       (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))))
 
-(use-package flycheck
-  :ensure t
-  :config
-  (progn
-    (add-hook 'after-init-hook #'global-flycheck-mode) ;; Turn on flychecking globally.
-    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(javascript-jshint))) ;; Disable jshint since we prefer eslint checking.
-    (flycheck-add-mode 'javascript-eslint 'web-mode) ;; Use eslint with web-mode for jsx files.
-    (setq-default flycheck-temp-prefix ".flycheck") ;; Customize flycheck temp file prefix.
-    (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers	'(json-jsonlist))))) ;; Disable json-jsonlist checking for json files.
-
 ;; gtd
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
+
+(setq gtd-directory "~/gtd")
+(if (not (file-directory-p gtd-directory)) (make-directory gtd-directory))
+(--map (if (not (file-exists-p (concat gtd-directory it))) (with-temp-buffer (write-file (concat gtd-directory it)))) '("/gtd.org" "/inbox.org" "/tickler.org" "/someday.org"))
+
 (setq org-agenda-files '("~/gtd/inbox.org"
 			 "~/gtd/gtd.org"
 			 "~/gtd/tickler.org"))
@@ -232,7 +224,9 @@
 (use-package ob-go :ensure t)
 (use-package ob-browser :ensure t)
 
-(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (go . t) (js . t) (shell . t)))
+(setq org-plantuml-jar-path
+	  (concat (file-name-directory load-file-name) "plantuml.jar"))
+(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
 
 (use-package company
   :ensure t
@@ -243,42 +237,6 @@
   (setq company-echo-delay 0)
   (setq company-begin-commands '(self-insert-command))
   (global-company-mode t))
-
-(use-package smart-compile :ensure t :defer t)
-(defun my-compilation-hook ()
-  (when (not (get-buffer-window "*compilation*"))
-    (save-selected-window
-      (save-excursion
-	(let* ((w (split-window-vertically)))
-	  (select-window w)
-	  (set-window-buffer w "*scratch*")
-	  (switch-to-buffer "*compilation*")
-	  (shrink-window 10))))))
-(add-hook 'compilation-mode-hook 'my-compilation-hook)
-(global-set-key [f9] 'smart-compile)
-
-
-
-
-;;
-;;  ██████╗   ██████╗  ██╗       █████╗  ███╗   ██╗  ██████╗
-;; ██╔════╝  ██╔═══██╗ ██║      ██╔══██╗ ████╗  ██║ ██╔════╝
-;; ██║  ███╗ ██║   ██║ ██║      ███████║ ██╔██╗ ██║ ██║  ███╗
-;; ██║   ██║ ██║   ██║ ██║      ██╔══██║ ██║╚██╗██║ ██║   ██║
-;; ╚██████╔╝ ╚██████╔╝ ███████╗ ██║  ██║ ██║ ╚████║ ╚██████╔╝
-;;  ╚═════╝   ╚═════╝  ╚══════╝ ╚═╝  ╚═╝ ╚═╝  ╚═══╝  ╚═════╝
-;;
-(use-package go-mode
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'go-mode-hook (lambda ()
-			    (set (make-local-variable 'compile-command)
-				 (format "go run %s" (file-name-nondirectory buffer-file-name)))
-			    (set (make-local-variable 'company-backends) '(company-go))
-			    (company-mode))))
-
-(use-package company-go :ensure t :defer t)
 
 
 ;;
@@ -336,7 +294,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons)))
+   '(dash plantuml-mode powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
