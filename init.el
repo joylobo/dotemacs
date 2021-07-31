@@ -173,12 +173,6 @@
   :ensure t
   :init (doom-modeline-mode 1))
 
-;; nyan mode.
-(use-package nyan-mode
-  :ensure t
-  :config
-  (nyan-mode))
-
 ;; dracula theme.
 (use-package dracula-theme
   :ensure t
@@ -223,6 +217,10 @@
 
 (use-package ob-go :ensure t)
 (use-package ob-browser :ensure t)
+
+(with-eval-after-load 'org
+  (setq org-startup-indented t) ; Enable `org-indent-mode' by default
+  (add-hook 'org-mode-hook #'visual-line-mode))
 
 (setq org-plantuml-jar-path
 	  (concat (file-name-directory load-file-name) "plantuml.jar"))
