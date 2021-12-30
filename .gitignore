@@ -10,3 +10,6 @@ eshell
 places
 recentf
 .mc-lists.el
+
+.org-id-locations
+org-roam.db
