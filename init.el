@@ -242,17 +242,15 @@
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory (file-truename "~/org-roam/"))
+  (org-roam-directory (file-truename "~/notes/"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n g" . org-roam-graph)
 	 ("C-c n i" . org-roam-node-insert)
 	 ("C-c n c" . org-roam-capture)
-	 ;; Dailies
 	 ("C-c n j" . org-roam-dailies-capture-today))
   :config
   (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
 (use-package org-roam-ui
@@ -265,6 +263,11 @@
 
 (if (memq window-system '(mac ns))
   (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
+
+(setq org-roam-capture-templates '(("d" "default" plain "%?"
+   :target (file+head "${slug}.org"
+		      "#+title: ${title}\n#+date: %<%Y-%m-%d %H:%M:%S>\n")
+   :unnarrowed t)))
 
 ;;
 ;;  ██████╗ ██╗   ██╗ ███████╗ ████████╗  ██████╗  ███╗   ███╗
