@@ -22,7 +22,7 @@
 (setq package-enable-at-startup nil)
 (setq package-archives '(
   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-	("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+  ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
 ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
@@ -125,7 +125,7 @@
   :defer t
   :bind (("C->" . 'mc/mark-next-like-this)
 	 ("C-<" . 'mc/mark-previous-like-this)
-	 ("C-c C-<" . 'mc/mark-all-like-this)))
+	 ("C-?" . 'mc/mark-all-like-this)))
 
 (use-package yasnippet
   :ensure t
@@ -172,9 +172,9 @@
   :ensure
   :config (powerline-default-theme))
 
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
+;(use-package doom-modeline
+;  :ensure t
+;  :hook (after-init . doom-modeline-mode))
 
 ;; dracula theme.
 (use-package dracula-theme
@@ -194,41 +194,7 @@
       :config
       (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))))
 
-;; gtd
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c a") 'org-agenda)
-
-(setq gtd-directory "~/gtd")
-(if (not (file-directory-p gtd-directory)) (make-directory gtd-directory))
-(--map (if (not (file-exists-p (concat gtd-directory it))) (with-temp-buffer (write-file (concat gtd-directory it)))) '("/gtd.org" "/inbox.org" "/tickler.org" "/someday.org"))
-
-(setq org-agenda-files '("~/gtd/inbox.org"
-			 "~/gtd/gtd.org"
-			 "~/gtd/tickler.org"))
-
-(setq org-capture-templates '(("t" "Todo [inbox]" entry
-			       (file+headline "~/gtd/inbox.org" "Tasks")
-			       "* TODO %i%?")
-			      ("T" "Tickler" entry
-			       (file+headline "~/gtd/tickler.org" "Tickler")
-			       "* %i%? \n %U")))
-
-(setq org-refile-targets '(("~/gtd/gtd.org" :maxlevel . 3)
-			   ("~/gtd/someday.org" :level . 1)
-			   ("~/gtd/tickler.org" :maxlevel . 2)))
-(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-
-(use-package ob-go :ensure t)
-(use-package ob-browser :ensure t)
-
-(with-eval-after-load 'org
-  (setq org-startup-indented t) ; Enable `org-indent-mode' by default
-  (add-hook 'org-mode-hook #'visual-line-mode))
-
-(setq org-plantuml-jar-path
-	  (concat (file-name-directory load-file-name) "plantuml.jar"))
-(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
-
+;; company
 (use-package company
   :ensure t
   :config
@@ -239,16 +205,43 @@
   (setq company-begin-commands '(self-insert-command))
   (global-company-mode t))
 
+;; org-mode
+(use-package ob-go :ensure t)
+(use-package ob-browser :ensure t)
+
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(with-eval-after-load 'org
+  (setq org-startup-indented t) ; Enable `org-indent-mode' by default
+  (add-hook 'org-mode-hook #'visual-line-mode))
+
+(setq org-plantuml-jar-path
+  (concat (file-name-directory load-file-name) "plantuml.jar"))
+(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
+
+(setq gtd-directory "~/gtd")
+(if (not (file-directory-p gtd-directory)) (make-directory gtd-directory))
+(--map (if (not (file-exists-p (concat gtd-directory it))) (with-temp-buffer (write-file (concat gtd-directory it)))) '("/gtd.org" "/inbox.org" "/tickler.org" "/someday.org"))
+(setq org-agenda-files '("~/gtd/inbox.org" "~/gtd/gtd.org" "~/gtd/tickler.org"))
+(setq org-capture-templates '(("t" "Todo [inbox]" entry
+			       (file+headline "~/gtd/inbox.org" "Tasks")
+			       "* TODO %i%?")
+			      ("T" "Tickler" entry
+			       (file+headline "~/gtd/tickler.org" "Tickler")
+			       "* %i%? \n %U")))
+(setq org-refile-targets '(("~/gtd/gtd.org" :maxlevel . 3)
+			   ("~/gtd/someday.org" :level . 1)
+			   ("~/gtd/tickler.org" :maxlevel . 2)))
+(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
 (use-package org-roam
   :ensure t
   :custom
   (org-roam-directory (file-truename "~/notes/"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-	 ("C-c n f" . org-roam-node-find)
-	 ("C-c n g" . org-roam-graph)
+  :bind (("C-c n f" . org-roam-node-find)
 	 ("C-c n i" . org-roam-node-insert)
 	 ("C-c n c" . org-roam-capture)
-	 ("C-c n j" . org-roam-dailies-capture-today))
+	 ("C-c n t" . org-roam-dailies-capture-today))
   :config
   (org-roam-db-autosync-mode)
   (require 'org-roam-protocol))
@@ -261,13 +254,10 @@
 	org-roam-ui-update-on-save t
 	org-roam-ui-open-on-start t))
 
-(if (memq window-system '(mac ns))
-  (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
-
-(setq org-roam-capture-templates '(("d" "default" plain "%?"
-   :target (file+head "${slug}.org"
-		      "#+title: ${title}\n#+date: %<%Y-%m-%d %H:%M:%S>\n")
-   :unnarrowed t)))
+(setq org-roam-capture-templates
+  '(("d" "default" plain "%?"
+    :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %<%Y-%m-%d %H:%M:%S>\n")
+    :unnarrowed t)))
 
 ;;
 ;;  ██████╗ ██╗   ██╗ ███████╗ ████████╗  ██████╗  ███╗   ███╗
@@ -324,7 +314,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(org-roam-ui org-roam dash plantuml-mode powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons)))
+   '(doom-modeline org-modern org-roam-ui org-roam dash plantuml-mode powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
