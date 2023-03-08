@@ -219,21 +219,6 @@
   (concat (file-name-directory load-file-name) "plantuml.jar"))
 (org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
 
-(setq gtd-directory "~/gtd")
-(if (not (file-directory-p gtd-directory)) (make-directory gtd-directory))
-(--map (if (not (file-exists-p (concat gtd-directory it))) (with-temp-buffer (write-file (concat gtd-directory it)))) '("/gtd.org" "/inbox.org" "/tickler.org" "/someday.org"))
-(setq org-agenda-files '("~/gtd/inbox.org" "~/gtd/gtd.org" "~/gtd/tickler.org"))
-(setq org-capture-templates '(("t" "Todo [inbox]" entry
-			       (file+headline "~/gtd/inbox.org" "Tasks")
-			       "* TODO %i%?")
-			      ("T" "Tickler" entry
-			       (file+headline "~/gtd/tickler.org" "Tickler")
-			       "* %i%? \n %U")))
-(setq org-refile-targets '(("~/gtd/gtd.org" :maxlevel . 3)
-			   ("~/gtd/someday.org" :level . 1)
-			   ("~/gtd/tickler.org" :maxlevel . 2)))
-(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-
 (use-package org-roam
   :ensure t
   :custom
