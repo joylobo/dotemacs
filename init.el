@@ -100,16 +100,11 @@
 ;; helm
 (use-package helm
   :ensure t
-  :config
-  (progn
-    (helm-mode 1)
-    (use-package helm-config
-      :config
-      (progn
-	(global-set-key (kbd "M-x") 'helm-M-x)
-	(global-set-key (kbd "C-x C-f") 'helm-find-files)
-	(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-	))))
+  :config  (helm-mode 1)
+  :bind (("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 ("C-x b" . helm-buffers-list)
+	 ("C-x c o" . helm-occur)))
 
 (use-package which-key
   :ensure t
@@ -172,15 +167,20 @@
   :ensure
   :config (powerline-default-theme))
 
-;(use-package doom-modeline
-;  :ensure t
-;  :hook (after-init . doom-modeline-mode))
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 
 ;; dracula theme.
 (use-package dracula-theme
   :ensure t
   :config
   (load-theme 'dracula t))
+
+;; nyan-mode
+(use-package nyan-mode
+  :ensure t
+  :config (nyan-mode t))
 
 ;; neotree.
 (use-package neotree
@@ -292,20 +292,6 @@
 
   (defun send-notification (title message)
     (shell-command (format "osascript -e 'display notification \"%s\" with title \"%s\"' sound name \"default\"" message title))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(doom-modeline org-modern org-roam-ui org-roam dash plantuml-mode powerline yasnippet-snippets yasnippet which-key htmlize apib-mode emmet-mode recentf-ext window-numbering web-mode use-package tern-auto-complete nyan-mode neotree js2-mode irony-eldoc helm go-mode go-autocomplete flycheck exec-path-from-shell dracula-theme company-irony benchmark-init all-the-icons)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (provide 'init)
 ;;; init.el ends here
