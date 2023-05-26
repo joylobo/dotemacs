@@ -206,8 +206,8 @@
   (global-company-mode t))
 
 ;; org-mode
-(use-package ob-go :ensure t)
-(use-package ob-browser :ensure t)
+(use-package ob-go :defer t :ensure t)
+(use-package ob-browser :defer t :ensure t)
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -217,9 +217,12 @@
 
 (setq org-plantuml-jar-path
   (concat (file-name-directory load-file-name) "plantuml.jar"))
+
+;; TODO: 改为按需加载
 (org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
 
 (use-package org-roam
+  :defer t
   :ensure t
   :custom
   (org-roam-directory (file-truename "~/notes/"))
@@ -232,6 +235,7 @@
   (require 'org-roam-protocol))
 
 (use-package org-roam-ui
+  :defer t
   :after org-roam
   :config
   (setq org-roam-ui-sync-theme t
