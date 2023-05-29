@@ -24,14 +24,17 @@
   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
   ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-
 ;; Install the use-package if needed.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
+
+;; Log the startup time.
+(use-package benchmark-init
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 ;; Ask "y" or "n" instead of "yes" or "no". Yes, laziness is great.
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -81,12 +84,6 @@
 (global-set-key (kbd "M-n") 'switch-to-next-buffer)
 (global-set-key (kbd "M-p") 'switch-to-prev-buffer)
 
-;; Log the startup time.
-(use-package benchmark-init
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
   :ensure t
@@ -96,6 +93,8 @@
     (setq exec-path-from-shell-arguments '("-l"))
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-env "GOPATH")))
+
+;; (use-package evil :ensure :init (evil-mode t))
 
 ;; helm
 (use-package helm
@@ -112,6 +111,7 @@
   :init (which-key-mode))
 
 (use-package undo-tree
+  :defer t
   :ensure t
   :bind (("C-x u" . 'undo-tree-visualize)))
 
@@ -167,15 +167,16 @@
   :ensure
   :config (powerline-default-theme))
 
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode))
+;(use-package doom-modeline
+;  :defer t
+;  :ensure t
+;  :hook (after-init . doom-modeline-mode))
 
 ;; dracula theme.
-(use-package dracula-theme
+(use-package material-theme
   :ensure t
   :config
-  (load-theme 'dracula t))
+  (load-theme 'material t))
 
 ;; nyan-mode
 (use-package nyan-mode
@@ -213,13 +214,11 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (with-eval-after-load 'org
   (setq org-startup-indented t) ; Enable `org-indent-mode' by default
+  (org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
   (add-hook 'org-mode-hook #'visual-line-mode))
 
 (setq org-plantuml-jar-path
   (concat (file-name-directory load-file-name) "plantuml.jar"))
-
-;; TODO: 改为按需加载
-(org-babel-do-load-languages 'org-babel-load-languages '((browser . t) (C . t) (calc . t) (emacs-lisp . t) (plantuml . t) (go . t) (js . t) (shell . t)))
 
 (use-package org-roam
   :defer t
@@ -299,3 +298,16 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(sml-mode zenburn-theme yasnippet-snippets writeroom-mode window-numbering which-key use-package undo-tree sml-modeline recentf-ext powerline org-roam ob-go ob-browser nyan-mode neotree multiple-cursors material-theme helm exec-path-from-shell evil dracula-theme doom-modeline company benchmark-init all-the-icons)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
