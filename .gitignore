@@ -5,6 +5,8 @@ auto-save-list
 bookmarks
 elpa
 eshell
+.DS_Store
+.bak
 .cache
 .emacs.desktop*
 places
