@@ -93,7 +93,8 @@
   (global-set-key (kbd "C-<backspace>") #'crux-kill-line-backwards)
   (global-set-key [remap kill-whole-line] #'crux-kill-whole-line))
 
-(use-package undo-tree :init(undo-tree-mode) :bind (("C-x u" . 'undo-tree-visualize)))
+(use-package undo-tree :init(undo-tree-mode) :bind (("C-x u" . 'undo-tree-visualize))
+  :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.undo"))))
 
 (use-package multiple-cursors :defer t
   :bind (("M-s-<down>" . 'mc/mark-next-like-this)

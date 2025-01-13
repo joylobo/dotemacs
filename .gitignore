@@ -9,6 +9,7 @@ eshell
 .bak
 .cache
 .emacs.desktop*
+.undo
 places
 recentf
 .mc-lists.el
