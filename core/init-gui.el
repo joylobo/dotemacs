@@ -6,6 +6,7 @@
 (global-set-key (kbd "<C-wheel-down>") 'ignore)
 (setq-default cursor-type 'bar)
 (set-fringe-mode 0)
+(setq-default line-spacing 0.2) ; 行间距
 
 (use-package all-the-icons)
 (require 'awesome-tab)
@@ -13,6 +14,16 @@
 (setq awesome-tab-dark-selected-foreground-color "#ffffff")
 (setq awesome-tab-dark-unselected-foreground-color "#969696")
 (setq awesome-tab-height 120)
+(global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-2") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-3") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-4") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-5") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-6") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-7") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
+(global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
 (awesome-tab-mode t)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -21,7 +32,20 @@
 (use-package window-numbering :defer t :init (window-numbering-mode 1))
 (global-set-key (kbd "M-n") 'switch-to-next-buffer)
 (global-set-key (kbd "M-p") 'switch-to-prev-buffer)
+(global-set-key (kbd "s-w") 'kill-this-buffer)
 
+(require 'ls-lisp)
+(setq ls-lisp-dirs-first t) ; 优先显示文件夹
+(setq ls-lisp-ignore-case t) ; 忽略大小写
+(setq ls-lisp-use-string-collate nil) ; 忽略大小写(非 windows)
+(setq ls-lisp-use-insert-directory-program nil)
+(add-hook 'dired-mode-hook 'dired-omit-mode)
+(setq dired-omit-files
+      (rx (or (seq bol (? ".") "#")
+	      (seq bol "." eol)
+	      (seq bol ".." eol)
+	      (seq bol ".git" eol)
+	      )))
 (use-package vscode-icon)
 (use-package dired-sidebar
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))

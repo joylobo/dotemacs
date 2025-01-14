@@ -2,6 +2,7 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-confirm-babel-evaluate nil)
+(setq org-html-validation-link nil) ; 导出 html 时不显示验证链接
 
 (use-package htmlize :after org)
 (use-package ob-go :after org)
@@ -16,7 +17,7 @@
   (add-hook 'org-mode-hook #'visual-line-mode))
 
 (use-package ob-mermaid :after org)
-(setq ob-mermaid-cli-path "/Users/joylobo/.nvm/versions/node/v22.11.0/bin/mmdc")
-(setq org-plantuml-jar-path (concat (file-name-directory load-file-name) "plantuml.jar"))
+(require 's)
+(setq ob-mermaid-cli-path (s-replace "\n" "" (shell-command-to-string "which mmdc")))
 
 (provide 'init-org)

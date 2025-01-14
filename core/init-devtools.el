@@ -13,14 +13,9 @@
   (global-company-mode t))
 
 (use-package copilot
-  :init
-  (copilot-mode t)
-  (add-to-list 'copilot-indentation-alist '(prog-mode . 2))
-  (add-to-list 'copilot-indentation-alist '(org-mode . 2))
-  (add-to-list 'copilot-indentation-alist '(text-mode . 2))
-  (add-to-list 'copilot-indentation-alist '(closure-mode . 2))
-  (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode . 2))
-  (add-to-list 'copilot-indentation-alist '(lisp-interaction-mode . 2))
+  :hook
+  (prog-mode . copilot-mode)
+  (copilot-mode . (lambda () (setq-local copilot--indent-warning-printed-p t)))
   :bind
   (:map copilot-completion-map
 	("<tab>" . 'copilot-accept-completion)

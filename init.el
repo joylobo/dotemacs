@@ -1,8 +1,5 @@
 ;;; init.el --- My emacs config for c/c++ javascript and golang.
 
-;;; Commentary:
-
-;;; Code:
 (setq user-full-name "Joy Lobo")
 (setq user-mail-address "joylobo0528@gmail.com")
 
