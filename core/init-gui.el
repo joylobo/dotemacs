@@ -25,7 +25,6 @@
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
   :config
   (setq dired-sidebar-theme 'vscode)
-  (setq dired-sidebar-subtree-line-prefix "__")
   (setq vscode-icon-size 16))
 
 (use-package popwin :init
