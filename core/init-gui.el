@@ -1,18 +1,19 @@
 (use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
 
 (pixel-scroll-precision-mode t)
+(global-set-key (kbd "<pinch>") 'ignore)
+(global-set-key (kbd "<C-wheel-up>") 'ignore)
+(global-set-key (kbd "<C-wheel-down>") 'ignore)
 (setq-default cursor-type 'bar)
 (set-fringe-mode 0)
 
-(custom-set-faces
- '(tab-line ((t (:background "#1e1e1e" :foreground "#d4d4d4" :box nil))))
- '(tab-line-tab ((t (:background "#2d2d2d" :foreground "#cccccc" :box (:line-width 1 :color "#2d2d2d")))))
- '(tab-line-tab-current ((t (:background "#007acc" :foreground "#ffffff" :box (:line-width 4 :color "#007acc")))))
- '(tab-line-tab-inactive ((t (:background "#1e1e1e" :foreground "#a6a6a6" :box (:line-width 4 :color "#1e1e1e"))))))
-(setq tab-line-new-button-show nil)
-(setq tab-line-close-button-show nil)
-(setq tab-line-separator " ")
-(add-hook 'prog-mode-hook #'tab-line-mode)
+(use-package all-the-icons)
+(require 'awesome-tab)
+(setq awesome-tab-dark-active-bar-color "#1e1e1e")
+(setq awesome-tab-dark-selected-foreground-color "#ffffff")
+(setq awesome-tab-dark-unselected-foreground-color "#969696")
+(setq awesome-tab-height 120)
+(awesome-tab-mode t)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (context-menu-mode)
@@ -21,6 +22,7 @@
 (global-set-key (kbd "M-n") 'switch-to-next-buffer)
 (global-set-key (kbd "M-p") 'switch-to-prev-buffer)
 
+(use-package vscode-icon)
 (use-package dired-sidebar
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
   :config

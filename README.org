@@ -1,0 +1,13 @@
+* README
+
+** Introduction
+#+begin_quote
+My emacs config for c/c++ javascript and golang developing.
+#+end_quote
+
+** Getting Started
+#+begin_src bash
+mv ~/.emacs ~/.emacs.bak
+mv ~/.emacs.d ~/.emacs.d.bak
+git clone https://github.com/joylobo/dotemacs.git ~/.emacs.d
+#+end_src
