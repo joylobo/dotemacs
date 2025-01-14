@@ -27,32 +27,36 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; Log the startup time.
 (use-package benchmark-init
   :config
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
-;; Ask "y" or "n" instead of "yes" or "no". Yes, laziness is great.
 (fset 'yes-or-no-p 'y-or-n-p)
+(cua-mode)
 
 (show-paren-mode t)
 (setq-default highlight-tabs t)
 (setq-default show-trailing-whitespace t)
 
-;; Remember cursor position.
-(save-place-mode 1)
+(setq custom-file "~/.emacs.d/core/custom.el")
+(load custom-file)
 
-;; Recently opened files.
+(save-place-mode 1)
+(setopt save-place-file "~/.emacs.d/.cache/places")
+
 (recentf-mode 1)
 (use-package recentf-ext)
 (setq recentf-max-menu-items 25)
+(setq recentf-save-file "~/.emacs.d/.cache/recentf")
 
-;; Save backup files in a dedicated directory.
 (make-directory "~/.emacs.d/.cache/backup-directory" t)
-(setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backup-directory")))
+(setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backup-directory/")))
+
+(make-directory "~/.emacs.d/.cache/auto-save-list" t)
+(setq auto-save-list-file-prefix "~/.emacs.d/.cache/auto-save-list/.saves-")
 
 (make-directory "~/.emacs.d/.cache/desktop-save" t)
-(setq desktop-path '("~/.emacs.d/.cache/desktop-save"))
+(setq desktop-path '("~/.emacs.d/.cache/desktop-save/"))
 (setq desktop-save t)
 (setq desktop-auto-save-timeout 300)
 (desktop-save-mode 1)
@@ -101,7 +105,7 @@
 
 (make-directory "~/.emacs.d/.cache/backup-directory" t)
 (use-package undo-tree :init(undo-tree-mode) :bind (("C-x u" . 'undo-tree-visualize))
-  :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo-tree"))))
+  :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo-tree/"))))
 
 (use-package multiple-cursors :defer t
   :bind (("M-s-<down>" . 'mc/mark-next-like-this)

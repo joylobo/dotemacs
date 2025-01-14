@@ -27,11 +27,9 @@
   (setq dired-sidebar-theme 'vscode)
   (setq vscode-icon-size 16))
 
-(use-package popwin :init
-  (popwin-mode 1)
-  (push '("*Warnings*" :position bottom :height 0.3) popwin:special-display-config)
-  (push '("*helm find files*" :position bottom :height 0.3) popwin:special-display-config)
-  (push '("*helm M-x*" :position bottom :height 0.3) popwin:special-display-config)
-  (push '("*Org-Babel Error Output*" :position bottom :height 0.3) popwin:special-display-config))
+(use-package shackle
+  :config
+  (shackle-mode 1)
+  (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.3))))
 
 (provide 'init-gui)
