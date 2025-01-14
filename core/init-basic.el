@@ -6,7 +6,9 @@
 (setq gc-cons-threshold (* 128 1024 1024))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-(set-face-attribute 'default nil :background "#383838" :foreground "#bbc2cf")
+(if (functionp 'tool-bar-mode) (tool-bar-mode 0))
+(if (functionp 'scroll-bar-mode) (scroll-bar-mode 0))
+(set-face-attribute 'default nil :background "#1e1e1e")
 (when (memq window-system '(mac ns))
   (set-frame-parameter nil 'ns-appearance 'dark)
   (set-frame-parameter nil 'ns-transparent-titlebar nil))

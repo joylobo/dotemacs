@@ -1,10 +1,11 @@
-(if (functionp 'tool-bar-mode) (tool-bar-mode 0))
-(if (functionp 'scroll-bar-mode) (scroll-bar-mode 0))
 (pixel-scroll-precision-mode t)
+(setq-default cursor-type 'bar)
 (set-fringe-mode 0)
 (tab-line-mode)
 (setq tab-line-new-button-show nil)
 (setq tab-line-separator "")
+
+(use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (context-menu-mode)
@@ -30,9 +31,6 @@
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
   (setq dired-sidebar-use-term-integration t)
   (setq dired-sidebar-use-custom-font t))
-
-(use-package powerline :init (powerline-default-theme))
-(use-package zenburn-theme :init (load-theme 'zenburn t))
 
 (use-package popwin :init
   (popwin-mode 1)
