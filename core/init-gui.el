@@ -1,18 +1,21 @@
+(use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
+
 (pixel-scroll-precision-mode t)
 (setq-default cursor-type 'bar)
 (set-fringe-mode 0)
-(tab-line-mode)
-(setq tab-line-new-button-show nil)
-(setq tab-line-separator "")
 
-(use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
+(custom-set-faces
+ '(tab-line ((t (:background "#1e1e1e" :foreground "#d4d4d4" :box nil))))
+ '(tab-line-tab ((t (:background "#2d2d2d" :foreground "#cccccc" :box (:line-width 1 :color "#2d2d2d")))))
+ '(tab-line-tab-current ((t (:background "#007acc" :foreground "#ffffff" :box (:line-width 4 :color "#007acc")))))
+ '(tab-line-tab-inactive ((t (:background "#1e1e1e" :foreground "#a6a6a6" :box (:line-width 4 :color "#1e1e1e"))))))
+(setq tab-line-new-button-show nil)
+(setq tab-line-close-button-show nil)
+(setq tab-line-separator " ")
+(add-hook 'prog-mode-hook #'tab-line-mode)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (context-menu-mode)
-
-;; Disable splash screen and startup message.
-(setq inhibit-startup-message t)
-(setq initial-scratch-message nil)
 
 (use-package window-numbering :defer t :init (window-numbering-mode 1))
 (global-set-key (kbd "M-n") 'switch-to-next-buffer)
@@ -20,17 +23,10 @@
 
 (use-package dired-sidebar
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :commands (dired-sidebar-toggle-sidebar)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-	    (lambda ()
-	      (unless (file-remote-p default-directory)
-		(auto-revert-mode))))
   :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t))
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq vscode-icon-size 16))
 
 (use-package popwin :init
   (popwin-mode 1)

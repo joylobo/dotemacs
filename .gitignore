@@ -6,13 +6,7 @@ bookmarks
 elpa
 eshell
 .DS_Store
-.bak
 .cache
-.emacs.desktop*
-.undo
 places
 recentf
 .mc-lists.el
-
-.org-id-locations
-org-roam.db

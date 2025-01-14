@@ -12,6 +12,8 @@
 (when (memq window-system '(mac ns))
   (set-frame-parameter nil 'ns-appearance 'dark)
   (set-frame-parameter nil 'ns-transparent-titlebar nil))
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -46,9 +48,11 @@
 (setq recentf-max-menu-items 25)
 
 ;; Save backup files in a dedicated directory.
-(setq backup-directory-alist '(("." . "~/.emacs.d/.bak")))
+(make-directory "~/.emacs.d/.cache/backup-directory" t)
+(setq backup-directory-alist '(("." . "~/.emacs.d/.cache/backup-directory")))
 
-(setq desktop-path '("~/.emacs.d/.bak"))
+(make-directory "~/.emacs.d/.cache/desktop-save" t)
+(setq desktop-path '("~/.emacs.d/.cache/desktop-save"))
 (setq desktop-save t)
 (setq desktop-auto-save-timeout 300)
 (desktop-save-mode 1)
@@ -95,8 +99,9 @@
   (global-set-key (kbd "C-<backspace>") #'crux-kill-line-backwards)
   (global-set-key [remap kill-whole-line] #'crux-kill-whole-line))
 
+(make-directory "~/.emacs.d/.cache/backup-directory" t)
 (use-package undo-tree :init(undo-tree-mode) :bind (("C-x u" . 'undo-tree-visualize))
-  :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.undo"))))
+  :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo-tree"))))
 
 (use-package multiple-cursors :defer t
   :bind (("M-s-<down>" . 'mc/mark-next-like-this)
