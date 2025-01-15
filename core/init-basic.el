@@ -38,6 +38,8 @@
 (setq-default highlight-tabs t)
 (setq-default show-trailing-whitespace t)
 
+(setq find-file-visit-truename t)
+
 (setq custom-file "~/.emacs.d/core/custom.el")
 (load custom-file)
 

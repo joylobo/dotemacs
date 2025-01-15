@@ -20,4 +20,23 @@
 (require 's)
 (setq ob-mermaid-cli-path (s-replace "\n" "" (shell-command-to-string "which mmdc")))
 
+(make-directory "~/org-roam" t)
+(use-package org-roam :after org
+  :config
+  (setq org-roam-directory "~/org-roam")
+  (setq org-roam-db-location "~/org-roam/org-roam.db")
+  (org-roam-db-autosync-mode)
+  :bind
+   ("C-c n c" . org-roam-capture)
+   ("C-c n f" . org-roam-node-find)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n g" . org-roam-graph))
+
+(use-package org-roam-ui :after org
+  :config
+  (setq org-roam-ui-sync-theme t)
+  (setq org-roam-ui-follow t)
+  (setq org-roam-ui-update-on-save t)
+  (setq org-roam-ui-open-on-start t))
+
 (provide 'init-org)
