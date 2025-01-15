@@ -23,6 +23,6 @@
 	("C-TAB" . 'copilot-accept-completion-by-word)
 	("C-<tab>" . 'copilot-accept-completion-by-word)))
 
-(use-package rainbow-mode :init(rainbow-mode))
+(use-package rainbow-mode :config (rainbow-mode))
 
 (provide 'init-devtools)
