@@ -11,3 +11,5 @@ places
 recentf
 .mc-lists.el
 .org-id-locations
+org-persist
+transient
