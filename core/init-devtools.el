@@ -12,6 +12,16 @@
   (setq company-begin-commands '(self-insert-command))
   (global-company-mode t))
 
+(use-package lsp-mode
+  :hook (
+	 (prog-mode . lsp)
+	 (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package dap-mode)
+
 (use-package copilot
   :hook
   (prog-mode . copilot-mode)

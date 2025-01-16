@@ -63,7 +63,6 @@
 (setq desktop-auto-save-timeout 300)
 (desktop-save-mode 1)
 
-;; Remove useless whitespace before saving a file.
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq require-final-newline t)

@@ -1,10 +1,15 @@
+;(setq url-proxy-services
+;   '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+;     ("http" . "localhost:7890")
+;     ("https" . "localhost:7890")))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(copilot-chat org-roam-ui org-roam all-the-icons awesome-tab rainbow-mode vscode-icon ob-mermaid ob-redis ob-mongo ob-browser ob-go htmlize copilot company yasnippet-snippets yasnippet shackle dired-sidebar window-numbering vscode-dark-plus-theme multiple-cursors undo-tree crux which-key helm exec-path-from-shell recentf-ext benchmark-init)))
+   '(dap-mode lsp-treemacs helm-lsp lsp-ui lsp-mode ffmpeg-player bongo copilot-chat org-roam-ui org-roam all-the-icons awesome-tab rainbow-mode vscode-icon ob-mermaid ob-redis ob-mongo ob-browser ob-go htmlize copilot company yasnippet-snippets yasnippet shackle dired-sidebar window-numbering vscode-dark-plus-theme multiple-cursors undo-tree crux which-key helm exec-path-from-shell recentf-ext benchmark-init)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

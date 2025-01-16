@@ -13,3 +13,6 @@ recentf
 .org-id-locations
 org-persist
 transient
+eaf
+.lsp-session-v1
+.dap-breakpoints

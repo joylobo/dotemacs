@@ -24,9 +24,14 @@
 (global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
 (global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
 (global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
+(defun awesome-tab-hide-tab (x)
+  (let ((name (format "%s" x)))
+    (or
+     (string-prefix-p "*" name)
+     )))
 (awesome-tab-mode t)
 
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(global-display-line-numbers-mode)
 (context-menu-mode)
 
 (use-package window-numbering :defer t :init (window-numbering-mode 1))
@@ -57,5 +62,12 @@
   :config
   (shackle-mode 1)
   (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.3))))
+
+(defun kill-other-buffers ()
+      "Kill all other buffers."
+      (interactive)
+      (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
+      (dired-sidebar-toggle-sidebar))
+(global-set-key (kbd "C-x C-b") 'kill-other-buffers)
 
 (provide 'init-gui)
