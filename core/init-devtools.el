@@ -14,13 +14,26 @@
 
 (use-package lsp-mode
   :hook (
-	 (prog-mode . lsp)
+	 (js-mode . lsp)
 	 (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-(use-package dap-mode)
+
+(use-package dap-mode
+  :config
+  (require 'dap-node)
+  (dap-node-setup)
+  :hook (
+  (dap-mode . (lambda () (set-fringe-style (quote (12 . 8))))))
+  :bind
+  ("<f5>" . 'dap-debug-last)
+  ("<f6>" . 'dap-continue)
+  ("<f7>" . 'dap-next)
+  ("<f8>" . 'dap-step-in)
+  ("<f9>" . 'dap-breakpoint-toggle)
+  ("S-<f9>" . 'dap-breakpoint-delete-all))
 
 (use-package copilot
   :hook

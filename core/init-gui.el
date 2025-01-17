@@ -29,14 +29,13 @@
     (or
      (string-prefix-p "*" name)
      )))
-(awesome-tab-mode t)
+;; (awesome-tab-mode t)
 
-(global-display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook 'display-line-numbers-mode)
 (context-menu-mode)
 
 (use-package window-numbering :defer t :init (window-numbering-mode 1))
-(global-set-key (kbd "M-n") 'switch-to-next-buffer)
-(global-set-key (kbd "M-p") 'switch-to-prev-buffer)
 (global-set-key (kbd "s-w") 'kill-this-buffer)
 
 (require 'ls-lisp)
@@ -62,6 +61,8 @@
   :config
   (shackle-mode 1)
   (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.3))))
+
+;; (use-package popwin :config (popwin-mode))
 
 (defun kill-other-buffers ()
       "Kill all other buffers."

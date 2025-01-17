@@ -84,7 +84,11 @@
 
 (use-package helm
   :config
-  (helm-mode 1)
+  (helm-mode)
+  (setq helm-display-function 'helm-display-buffer-in-own-frame
+	helm-display-buffer-reuse-frame t
+	helm-use-undecorated-frame-option t)
+  (helm-ff-icon-mode)
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
   :bind (("M-x" . helm-M-x)
@@ -109,8 +113,8 @@
   :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo-tree/"))))
 
 (use-package multiple-cursors :defer t
-  :bind (("M-s-<down>" . 'mc/mark-next-like-this)
-	 ("M-s-<up>" . 'mc/mark-previous-like-this)
+  :bind (("C->" . 'mc/mark-next-like-this)
+	 ("C-<" . 'mc/mark-previous-like-this)
 	 ("C-?" . 'mc/mark-all-like-this)))
 
 (provide 'init-basic)
