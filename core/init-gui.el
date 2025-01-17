@@ -57,12 +57,12 @@
   (setq dired-sidebar-theme 'vscode)
   (setq vscode-icon-size 16))
 
-(use-package shackle
-  :config
-  (shackle-mode 1)
-  (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.3))))
+;; (use-package shackle
+;;   :config
+;;   (shackle-mode 1)
+;;   (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.3))))
 
-;; (use-package popwin :config (popwin-mode))
+(use-package popwin :config (popwin-mode))
 
 (defun kill-other-buffers ()
       "Kill all other buffers."

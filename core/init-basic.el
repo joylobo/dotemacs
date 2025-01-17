@@ -85,9 +85,7 @@
 (use-package helm
   :config
   (helm-mode)
-  (setq helm-display-function 'helm-display-buffer-in-own-frame
-	helm-display-buffer-reuse-frame t
-	helm-use-undecorated-frame-option t)
+  (setq helm-split-window-in-side-p t)
   (helm-ff-icon-mode)
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
