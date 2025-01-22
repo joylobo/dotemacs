@@ -1,4 +1,4 @@
-(use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
+(use-package doom-themes :config (load-theme 'doom-zenburn t))
 
 (pixel-scroll-precision-mode t)
 (global-set-key (kbd "<pinch>") 'ignore)
@@ -6,10 +6,10 @@
 (global-set-key (kbd "<C-wheel-down>") 'ignore)
 (setq-default cursor-type 'bar)
 (set-fringe-mode 0)
-(setq-default line-spacing 0.2) ; 行间距
+(setq-default line-spacing 0.2) ;; 行间距
 
 (use-package all-the-icons)
-(use-package centaur-tabs :demand
+(use-package centaur-tabs
   :config
   (setq centaur-tabs-height 32)
   (setq centaur-tabs-set-icons t)
@@ -61,15 +61,17 @@
 (use-package popwin :config (popwin-mode))
 (setq popwin:special-display-config
       '(
-	("*Help*" :dedicated t :position bottom :stick t :height 0.4)
-	("*Compilation*" :dedicated t :position bottom :stick t :height 0.4)
-	("*grep*" :dedicated t :position bottom :stick t :height 0.4)))
+	("*Help*" :dedicated t :position bottom :stick t :height 0.3)
+	("*Compilation*" :dedicated t :position bottom :stick t :height 0.3)
+	("*eshell*" :dedicated t :position bottom :stick t :height 0.3)
+	("ellama.*" :regexp t :dedicated t :position bottom :stick t :height 0.3)
+	("*grep*" :dedicated t :position bottom :stick t :height 0.3)))
 
 (defun kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
-  (dired-sidebar-toggle-sidebar))
+  (treemacs))
 (global-set-key (kbd "C-x C-b") 'kill-other-buffers)
 
 (provide 'init-gui)

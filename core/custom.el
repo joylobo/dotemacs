@@ -9,14 +9,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(treemacs-all-the-icons treemacs-projectile projectile ellama ollama company-box move-text dracula-theme all-the-icons-dired centaur-tabs popwin winum dap-chrome dap-mode lsp-treemacs helm-lsp lsp-ui lsp-mode ffmpeg-player bongo copilot-chat org-roam-ui org-roam all-the-icons awesome-tab rainbow-mode vscode-icon ob-mermaid ob-redis ob-mongo ob-browser ob-go htmlize copilot company yasnippet-snippets yasnippet shackle dired-sidebar window-numbering vscode-dark-plus-theme multiple-cursors undo-tree crux which-key helm exec-path-from-shell recentf-ext benchmark-init)))
+   '(easy-menu zenburn-theme yasnippet-snippets winum window-numbering which-key vscode-icon vscode-dark-plus-theme undo-tree treemacs-projectile treemacs-all-the-icons shackle recentf-ext rainbow-mode popwin org-roam-ui ob-redis ob-mongo ob-mermaid ob-go ob-browser multiple-cursors move-text lsp-ui htmlize helm-lsp gruvbox-theme ffmpeg-player exec-path-from-shell ellama dracula-theme doom-themes dired-sidebar dap-mode crux copilot-chat copilot company-box centaur-tabs bongo benchmark-init all-the-icons-dired)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(tab-line ((t (:background "#1e1e1e" :foreground "#d4d4d4" :box nil))))
- '(tab-line-tab ((t (:background "#2d2d2d" :foreground "#cccccc" :box (:line-width 8 :color "#2d2d2d")))))
- '(tab-line-tab-current ((t (:background "#007acc" :foreground "#ffffff" :box (:line-width 8 :color "#007acc")))))
- '(tab-line-tab-inactive ((t (:background "#1e1e1e" :foreground "#a6a6a6" :box (:line-width 4 :color "#1e1e1e")))))
- '(tab-line-tab-inactive-alternate ((t (:background "red" :foreground "#cccccc" :box (:line-width 8 :color "#2d2d2d"))))))
+ )

@@ -1,4 +1,7 @@
-(use-package yasnippet :init (yas-global-mode))
+(use-package yasnippet
+  :config
+  (setq yas-use-menu nil)
+  (yas-global-mode))
 (use-package yasnippet-snippets :defer t)
 
 (use-package dash :defer t)

@@ -3,7 +3,7 @@
 
 (if (functionp 'tool-bar-mode) (tool-bar-mode 0))
 (if (functionp 'scroll-bar-mode) (scroll-bar-mode 0))
-(set-face-attribute 'default nil :background "#1e1e1e")
+(set-face-attribute 'default nil :background "#383838")
 (when (memq window-system '(mac ns))
   (set-frame-parameter nil 'ns-appearance 'dark)
   (set-frame-parameter nil 'ns-transparent-titlebar nil))
