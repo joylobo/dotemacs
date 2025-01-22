@@ -11,6 +11,7 @@
   (setq company-echo-delay 0)
   (setq company-begin-commands '(self-insert-command))
   (global-company-mode t))
+(use-package company-box :hook (company-mode . company-box-mode))
 
 (use-package lsp-mode
   :hook (

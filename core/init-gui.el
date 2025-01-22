@@ -30,6 +30,8 @@
   (let ((name (format "%s" x)))
     (or
      (string-prefix-p "*" name)
+     (string-prefix-p " *" name)
+     (string-prefix-p ":" name)
      )))
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
