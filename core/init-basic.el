@@ -27,7 +27,6 @@
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (fset 'yes-or-no-p 'y-or-n-p)
-(cua-mode)
 
 (show-paren-mode t)
 (setq-default highlight-tabs t)

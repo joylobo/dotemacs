@@ -1,4 +1,5 @@
 (use-package doom-themes :config (load-theme 'doom-zenburn t))
+(use-package doom-modeline :config (doom-modeline-mode))
 
 (pixel-scroll-precision-mode t)
 (global-set-key (kbd "<pinch>") 'ignore)
