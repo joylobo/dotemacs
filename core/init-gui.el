@@ -9,27 +9,28 @@
 (setq-default line-spacing 0.2) ; 行间距
 
 (use-package all-the-icons)
-(require 'awesome-tab)
-(setq awesome-tab-dark-active-bar-color "#1e1e1e")
-(setq awesome-tab-dark-selected-foreground-color "#ffffff")
-(setq awesome-tab-dark-unselected-foreground-color "#969696")
-(setq awesome-tab-height 120)
-(global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-2") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-3") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-4") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-5") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-6") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-7") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
-(global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
-(defun awesome-tab-hide-tab (x)
+(use-package centaur-tabs :demand
+  :config
+  (setq centaur-tabs-height 32)
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-icon-type 'all-the-icons)
+  (global-set-key (kbd "s-1") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-2") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-3") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-4") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-5") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-6") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-7") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-8") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-9") 'centaur-tabs-select-visible-tab)
+  (global-set-key (kbd "s-0") 'centaur-tabs-select-visible-tab)
+  (centaur-tabs-mode t))
+
+(defun centaur-tabs-hide-tab (x)
   (let ((name (format "%s" x)))
     (or
      (string-prefix-p "*" name)
      )))
-;; (awesome-tab-mode t)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'text-mode-hook 'display-line-numbers-mode)
@@ -57,18 +58,13 @@
   (setq dired-sidebar-theme 'vscode)
   (setq vscode-icon-size 16))
 
-;; (use-package shackle
-;;   :config
-;;   (shackle-mode 1)
-;;   (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.3))))
-
 (use-package popwin :config (popwin-mode))
 
 (defun kill-other-buffers ()
-      "Kill all other buffers."
-      (interactive)
-      (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
-      (dired-sidebar-toggle-sidebar))
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
+  (dired-sidebar-toggle-sidebar))
 (global-set-key (kbd "C-x C-b") 'kill-other-buffers)
 
 (provide 'init-gui)

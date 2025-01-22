@@ -1,8 +1,3 @@
-(when (version< emacs-version "29.1")
- (message "Please upgrade to Emacs 29.1 or newer.")
- (sit-for 5)
- (kill-emacs))
-
 (setq gc-cons-threshold (* 128 1024 1024))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
@@ -59,9 +54,10 @@
 
 (make-directory "~/.emacs.d/.cache/desktop-save" t)
 (setq desktop-path '("~/.emacs.d/.cache/desktop-save/"))
-(setq desktop-save t)
-(setq desktop-auto-save-timeout 300)
-(desktop-save-mode 1)
+(desktop-save-mode)
+(add-hook 'desktop-after-read-hook
+	  (lambda ()
+	    (dired-sidebar-show-sidebar)))
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -86,6 +82,8 @@
   :config
   (helm-mode)
   (setq helm-split-window-in-side-p t)
+  (setq helm-display-header-line nil) ;; 解决当显示 tab-bar 时 helm 不刷新的问题
+  (helm-autoresize-mode)
   (helm-ff-icon-mode)
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
@@ -96,6 +94,8 @@
 	 ("C-x c o" . helm-occur)))
 
 (use-package which-key :defer t :init (which-key-mode))
+
+(use-package move-text)
 
 (use-package crux
   :config
