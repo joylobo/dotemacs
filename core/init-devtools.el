@@ -27,7 +27,7 @@
   (require 'dap-node)
   (dap-node-setup)
   :hook (
-  (dap-mode . (lambda () (set-fringe-style (quote (12 . 8))))))
+	 (dap-mode . (lambda () (set-fringe-style (quote (12 . 8))))))
   :bind
   ("<f5>" . 'dap-debug-last)
   ("<f6>" . 'dap-continue)
@@ -49,5 +49,14 @@
 (use-package copilot-chat)
 
 (use-package rainbow-mode :config (rainbow-mode))
+
+(use-package ellama
+  :bind ("C-c e" . ellama-transient-main-menu)
+  :init
+  (setopt ellama-language "Chinese")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+	  (make-llm-ollama :chat-model "qwen2.5" :embedding-model "qwen2.5"))
+  :config (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
 
 (provide 'init-devtools)

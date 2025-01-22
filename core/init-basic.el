@@ -57,7 +57,7 @@
 (desktop-save-mode)
 (add-hook 'desktop-after-read-hook
 	  (lambda ()
-	    (dired-sidebar-show-sidebar)))
+	    (treemacs)))
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
