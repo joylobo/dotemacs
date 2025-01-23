@@ -2,7 +2,7 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-confirm-babel-evaluate nil)
-(setq org-html-validation-link nil) ; 导出 html 时不显示验证链接
+(setq org-html-validation-link nil) ;; 导出 html 时不显示验证链接
 
 (use-package htmlize :after org)
 (use-package ob-go :after org)
