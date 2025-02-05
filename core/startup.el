@@ -24,8 +24,10 @@
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
-(use-package doom-modeline :config (doom-modeline-mode))
-(setq doom-modeline-buffer-name nil)
+(use-package doom-modeline :config
+  (setq doom-modeline-bar-width 0)
+  (setq doom-modeline-buffer-name nil)
+  (doom-modeline-mode))
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)

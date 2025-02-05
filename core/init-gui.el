@@ -59,7 +59,7 @@
 
 (use-package delight
   :config
-  (delight 'treemacs-mode "")) ;; 隐藏 treemace 模式名称
+  (delight 'treemacs-mode "EXPLORER"))
 
 (use-package popwin :config (popwin-mode))
 (setq popwin:special-display-config
