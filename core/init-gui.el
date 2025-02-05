@@ -57,6 +57,10 @@
   :config
   (treemacs-project-follow-mode t))
 
+(use-package delight
+  :config
+  (delight 'treemacs-mode "")) ;; 隐藏 treemace 模式名称
+
 (use-package popwin :config (popwin-mode))
 (setq popwin:special-display-config
       '(

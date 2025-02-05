@@ -55,6 +55,8 @@
 (use-package undo-tree :init(undo-tree-mode) :bind (("C-x u" . 'undo-tree-visualize))
   :config (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo-tree/"))))
 
+(use-package editorconfig :config (editorconfig-mode 1))
+
 (use-package move-text
   :bind (("M-<up>" . 'move-text-up)
 	 ("M-<down>" . 'move-text-down)))

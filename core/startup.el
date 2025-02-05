@@ -23,8 +23,10 @@
   :config
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
-(use-package doom-themes :config (load-theme 'doom-zenburn t))
+(use-package vscode-dark-plus-theme :config (load-theme 'vscode-dark-plus t))
 (use-package doom-modeline :config (doom-modeline-mode))
+(setq doom-modeline-buffer-name nil)
+
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
