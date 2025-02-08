@@ -1,4 +1,3 @@
-;; (set-face-attribute 'default nil :background "#191919" :foreground "#dcdccc")
 (if (functionp 'tool-bar-mode) (tool-bar-mode 0))
 
 (when (memq window-system '(mac ns))

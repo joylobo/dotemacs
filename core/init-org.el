@@ -45,6 +45,22 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n g" . org-roam-graph))
 
+(setq org-roam-capture-templates
+      '(("d" "default" plain "%?"
+	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+			    "#+include: header.org\n#+title: ${title}\n\n")
+	 :unnarrowed t)))
+
+(setq org-publish-project-alist
+      '(("org-roam-notes-html"
+	 :base-directory "~/org-roam-notes/"
+	 :base-extension "org"
+	 :publishing-directory "~/org-roam-notes/html/"
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :headline-levels 4
+	 :auto-preamble t)))
+
 (use-package org-roam-ui :after org
   :config
   (setq org-roam-ui-sync-theme t)
