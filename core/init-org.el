@@ -45,6 +45,20 @@
   ("C-c n i" . org-roam-node-insert)
   ("C-c n g" . org-roam-graph))
 
+(add-hook 'org-mode-hook #'org-display-inline-images)
+(setq org-image-actual-width nil)
+(use-package org-download
+  :ensure t
+  :config
+  (setq org-download-image-dir "~/org-images/") ; 自定义存储路径
+  (setq org-download-screenshot-method "screencapture -i %s") ; Mac截图命令
+  (setq org-download-method 'directory))
+
+(defun org-download-time-annotate (link)
+  "Customize the annotation format for org-download."
+  "#+attr_html: :width 640px\n")
+(setq org-download-annotate-function #'org-download-time-annotate)
+
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?"
 	 :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"

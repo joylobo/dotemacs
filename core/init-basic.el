@@ -58,8 +58,8 @@
 (use-package editorconfig :config (editorconfig-mode 1))
 
 (use-package move-text
-  :bind (("M-<up>" . 'move-text-up)
-	 ("M-<down>" . 'move-text-down)))
+  :bind (("M-p" . 'move-text-up)
+	 ("M-n" . 'move-text-down)))
 
 (use-package multiple-cursors :defer t
   :bind (("C->" . 'mc/mark-next-like-this)
